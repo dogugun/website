@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Dogugun Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #00d4ff, #5a67d8, #667eea);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            padding: 8rem 0 4rem 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #00d4ff, #5a67d8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: #b8c6db;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Section Styles */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #00d4ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #b8c6db;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        /* Services Overview */
+        .services-overview {
+            padding: 4rem 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: #b8c6db;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+        }
+
+        .service-features li {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        /* Detailed Service Sections */
+        .service-detail {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .service-detail:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .service-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .service-text h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .service-text h3 {
+            font-size: 1.3rem;
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .service-text p {
+            color: #b8c6db;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .service-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-item {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .highlight-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-label {
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .service-visual {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            border-color: #00d4ff;
+            transform: translateY(-3px);
+        }
+
+        .tech-item img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item span {
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .process-step h4 {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .process-step p {
+            color: #b8c6db;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* CTA Section */
+        .services-cta {
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #5a67d8;
+        }
+
+        .btn-secondary:hover {
+            background: #5a67d8;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(90, 103, 216, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .service-content { grid-template-columns: 1fr; gap: 2rem; }
+            .nav-links { display: none; }
+            .service-highlights { grid-template-columns: 1fr; }
+            .process-steps { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">Dogugun Analytics</a>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./services.html" class="active">Services</a></li>
+                
+                <li><a href="./clients.html">Clients</a></li>
+                <li><a href="./index.html">Contact</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Our Services</h1>
+                <p>Comprehensive data analytics and AI solutions designed to transform your business operations and unlock the full potential of your data assets.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section class="services-overview">
+        <div class="container">
+            <h2 class="section-title">Core Service Offerings</h2>
+            <p class="section-subtitle">From data infrastructure to intelligent applications, we provide end-to-end solutions for your analytics needs</p>
+            
+            <div class="services-grid">
+                <div class="service-card" onclick="scrollToSection('datawarehouse')">
+                    <div class="service-icon">🏗️</div>
+                    <h3>Data Warehouse Solutions</h3>
+                    <p>Build scalable, high-performance data warehouses using Snowflake and Apache Iceberg for modern analytics workloads.</p>
+                    <ul class="service-features">
+                        <li>Snowflake cloud data warehouse</li>
+                        <li>Apache Iceberg table format</li>
+                        <li>Data lake integration</li>
+                        <li>Performance optimization</li>
+                        <li>Cost-effective scaling</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" onclick="scrollToSection('predictive-ml')">
+                    <div class="service-icon">🔮</div>
+                    <h3>Predictive ML Solutions</h3>
+                    <p>Leverage machine learning to forecast trends, predict outcomes, and make data-driven decisions with confidence.</p>
+                    <ul class="service-features">
+                        <li>Custom ML model development</li>
+                        <li>Automated feature engineering</li>
+                        <li>Model deployment & monitoring</li>
+                        <li>A/B testing frameworks</li>
+                        <li>MLOps best practices</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" onclick="scrollToSection('realtime-analytics')">
+                    <div class="service-icon">⚡</div>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Process and analyze streaming data in real-time to enable instant insights and immediate business responses.</p>
+                    <ul class="service-features">
+                        <li>Stream processing pipelines</li>
+                        <li>Real-time dashboards</li>
+                        <li>Event-driven architecture</li>
+                        <li>Low-latency processing</li>
+                        <li>Scalable infrastructure</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" onclick="scrollToSection('agentic-ai')">
+                    <div class="service-icon">🤖</div>
+                    <h3>Agentic AI Applications</h3>
+                    <p>Deploy intelligent AI agents that can reason, plan, and execute complex tasks autonomously within your business processes.</p>
+                    <ul class="service-features">
+                        <li>Custom AI agent development</li>
+                        <li>Multi-agent orchestration</li>
+                        <li>Natural language interfaces</li>
+                        <li>Workflow automation</li>
+                        <li>Intelligent decision making</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Warehouse Solutions -->
+    <section id="datawarehouse" class="service-detail">
+        <div class="container">
+            <div class="service-content">
+                <div class="service-text">
+                    <h2>Data Warehouse Solutions</h2>
+                    <h3>Snowflake & Apache Iceberg Excellence</h3>
+                    <p>Transform your data architecture with our comprehensive data warehouse solutions. We specialize in implementing Snowflake's cloud-native platform combined with Apache Iceberg's open table format to create scalable, performant, and cost-effective data storage systems.</p>
+                    
+                    
+                </div>
+                
+                <div class="service-visual">
+                    <h4 style="color: #ffffff; margin-bottom: 1rem;">Technology Stack</h4>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #29b5e8, #1e88e5); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SF</div>
+                            <span>Snowflake</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">I</div>
+                            <span>Iceberg</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff9a00, #ff6b00); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">S3</div>
+                            <span>AWS S3</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #326ce5, #1a73e8); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">K</div>
+                            <span>Kafka</span>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #ffffff; margin: 2rem 0 1rem 0;">Implementation Process</h4>
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <h4>Assessment</h4>
+                            <p>Analyze current data infrastructure and requirements</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <h4>Design</h4>
+                            <p>Architect optimal warehouse solution with Snowflake & Iceberg</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <h4>Migration</h4>
+                            <p>Seamlessly migrate existing data with zero downtime</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <h4>Optimize</h4>
+                            <p>Fine-tune performance and implement cost controls</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictive ML Solutions -->
+    <section id="predictive-ml" class="service-detail">
+        <div class="container">
+            <div class="service-content">
+                <div class="service-visual">
+                    <h4 style="color: #ffffff; margin-bottom: 1rem;">ML Model Lifecycle</h4>
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <h4>Data Preparation</h4>
+                            <p>Feature engineering and data preprocessing</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <h4>Model Training</h4>
+                            <p>Algorithm selection and hyperparameter tuning</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <h4>Validation</h4>
+                            <p>Cross-validation and performance testing</p>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <h4>Deployment</h4>
+                            <p>Production deployment with monitoring</p>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #ffffff; margin: 2rem 0 1rem 0;">ML Frameworks</h4>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff6f00, #ff8f00); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">TF</div>
+                            <span>TensorFlow</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ee4c2c, #ff6b35); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">PT</div>
+                            <span>PyTorch</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f7931e, #ffb900); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SK</div>
+                            <span>Scikit-learn</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #00d4aa, #4ade80); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">ML</div>
+                            <span>MLflow</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-text">
+                    <h2>Predictive ML Solutions</h2>
+                    <h3>Advanced Machine Learning for Business Intelligence</h3>
+                    <p>Harness the power of machine learning to predict future trends, customer behavior, and business outcomes. Our predictive ML solutions combine cutting-edge algorithms with robust MLOps practices to deliver accurate, scalable, and maintainable models.</p>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real-Time Analytics -->
+    <section id="realtime-analytics" class="service-detail">
+        <div class="container">
+            <div class="service-content">
+                <div class="service-text">
+                    <h2>Real-Time Analytics</h2>
+                    <h3>Instant Insights from Streaming Data</h3>
+                    <p>Make decisions at the speed of business with our real-time analytics solutions. Process millions of events per second, detect patterns instantly, and respond to changes as they happen with our high-performance streaming analytics platform.</p>
+                    
+                    
+                </div>
+                
+                <div class="service-visual">
+                    <h4 style="color: #ffffff; margin-bottom: 1rem;">Streaming Architecture</h4>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1a73e8, #4285f4); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">K</div>
+                            <span>Kafka</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #e94560, #f16987); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">F</div>
+                            <span>Flink</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">S</div>
+                            <span>Spark</span>
+                        </div>
+                        <div class="tech-item">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 8px; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">S</div>
+                            <span>Druid</span>
+                        </div>
