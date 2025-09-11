@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Clients - Dogugun Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #00d4ff, #5a67d8, #667eea);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            padding: 8rem 0 4rem 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #00d4ff, #5a67d8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: #b8c6db;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .stat-label {
+            color: #b8c6db;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Section Styles */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #00d4ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #b8c6db;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        /* Featured Clients */
+        .featured-clients {
+            padding: 4rem 0;
+        }
+
+        .client-logos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .client-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .client-logo:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .client-logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .client-logo:hover::before {
+            left: 100%;
+        }
+
+        /* Case Studies */
+        .case-studies {
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .case-study-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .case-study-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .case-study-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .case-study-card:hover::before {
+            left: 100%;
+        }
+
+        .case-study-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .client-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .client-info h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .industry-tag {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 15px;
+        }
+
+        .challenge {
+            margin-bottom: 1.5rem;
+        }
+
+        .challenge h4 {
+            color: #ff6b6b;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .solution {
+            margin-bottom: 1.5rem;
+        }
+
+        .solution h4 {
+            color: #51cf66;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .results {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .results h4 {
+            color: #00d4ff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .case-study-card p {
+            color: #b8c6db;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .results-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .results-list li {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .results-list li::before {
+            content: '↗';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 0;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(90, 103, 216, 0.1));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            color: #00d4ff;
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            color: #ffffff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: #b8c6db;
+            font-size: 0.9rem;
+        }
+
+        /* Industries */
+        .industries {
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .industry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .industry-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .industry-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .industry-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .industry-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .industry-card p {
+            color: #b8c6db;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .client-cta {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #5a67d8);
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #5a67d8;
+        }
+
+        .btn-secondary:hover {
+            background: #5a67d8;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(90, 103, 216, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .case-study-grid { grid-template-columns: 1fr; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .industry-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+            .nav-links { display: none; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">Dogugun Analytics</a>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./services.html">Services</a></li>
+                
+                <li><a href="./clients.html" class="active">Clients</a></li>
+                <li><a href="./index.html" >Contact</a></li>
+                
+                
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Client Success Stories</h1>
+                <p>Discover how we've helped organizations across industries transform their data into competitive advantages through advanced analytics and AI solutions.</p>
+            </div>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">20+</span>
+                    <div class="stat-label">Successful Projects</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <div class="stat-label">Domains</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">~10</span>
+                    <div class="stat-label">Clients Accross the Globe</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Clients -->
+    <section class="featured-clients">
+        <div class="container">
+            <h2 class="section-title">Trusted by Industry Leaders</h2>
+            <p class="section-subtitle">We partner with companies accross the globe in all sizes and industries, from top-3 consultancy firms to stealth mode startups</p>
+            
+            <div class="client-logos">
+                <div class="client-logo">
+                    <svg width="1" height="4" viewBox="0 0 100 40">
+                        <img/ src='https://cdn.prod.website-files.com/644b9880793ded27b28dd7d4/64a8c1cdd4272d7f7a1bcb9b_Amperecloud_Open_Graph_image.png', style='width: 100%'>
+                        <text x="50" y="25" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="600"></text>
+
+                    </svg>
+                </div>
+                <div class="client-logo">
+                    <svg width="100" height="40" viewBox="0 0 100 40">
+                        <img/ src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQBkfr4VzXF7J8srDpf6mFILXsNDe6V-tWfg&s', style='width:100%'>
+
+                        <text x="67" y="22" text-anchor="middle" fill="#1a1a2e" font-size="10" font-weight="600"></text>
+                    </svg>
+                </div>
+
+                <div class="client-logo"style='background:#808080'>
+                    <svg width="100" height="40" viewBox="0 0 100 40">
+
+                        <img/ src='https://www.thecontigroup.com/wp-content/uploads/2022/05/The-Conti-Group-Logo-white.svg', style='width: 120%' >
+
+                        <text x="67" y="22" text-anchor="middle" fill="#1a1a2e" font-size="10" font-weight="600"></text>
+                    </svg>
+                </div>
+<div class="client-logo"style='background:white'>
+                    <svg width="100" height="40" viewBox="0 0 100 40" style='background:white'>
+                        <img/ src='https://images.squarespace-cdn.com/content/v1/66d8f9b57e641819cee2d7c6/b5c6d24f-535a-486b-8f60-0d7bcec62fb3/logo_bk-02.png?format=1500w', style='width: 100%;background:white'>
+
+                        <text x="67" y="22" text-anchor="middle" fill="#1a1a2e" font-size="10" font-weight="600"></text>
+                    </svg>
+                </div>
+                
+                
+                
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="case-studies">
+        <div class="container">
+            <h2 class="section-title">Case Studies</h2>
+            <p class="section-subtitle">Real-world examples of how our solutions drive measurable business impact</p>
+            
+            <div class="case-study-grid">
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div class="client-avatar">GB</div>
+                        <div class="client-info">
+                            <h3>BCG Gamma</h3>
+                            <span class="industry-tag">Consultancy</span>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="solution" style='height:80px'>
+                        <h4>Solution</h4>
+                        <p>Developed the ML solution and Data Service that serves case team accross the globe. </p>
+                    </div>
+                    
+                    
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div class="client-avatar">RM</div>
+                        <div class="client-info">
+                            <h3>AmpereCloud</h3>
+                            <span class="industry-tag">Energy</span>
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="solution">
+                        <h4>Solution</h4>
+                        <p>Built the forecasting and performance measurement analytics suite for Germany's top solar power operating system provider.</p>
+                    </div>
+                    
+                    
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div class="client-avatar">HP</div>
+                        <div class="client-info">
+                            <h3>RedSky Health</h3>
+                            <span class="industry-tag">Healthcare</span>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="solution">
+                        <h4>Solution</h4>
+                        <p>The first of its kind, AI assisted claim management and correction solution</p>
+                    </div>
+                    
+                   
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+   
